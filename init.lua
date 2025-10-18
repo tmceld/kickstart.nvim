@@ -72,7 +72,12 @@ vim.o.showmode = false
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.schedule(function()
-  vim.o.clipboard = 'unnamedplus'
+  -- disable global clipboard integration first:
+  vim.o.clipboard = ''
+
+  -- leader+y / leader+p use system clipboard
+  vim.keymap.set({ 'n', 'v' }, '<leader>y', '"+y', { desc = 'Yank to system clipboard' })
+  vim.keymap.set({ 'n', 'v' }, '<leader>p', '"+p', { desc = 'Paste from system clipboard' })
 end)
 
 -- Enable break indent
@@ -240,6 +245,9 @@ require('lazy').setup({
       },
     },
   },
+
+  -- Git commands inside nvim (status, commit, blame, etc.)
+  { 'tpope/vim-fugitive', cmd = { 'Git', 'G' } },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
